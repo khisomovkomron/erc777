@@ -64,3 +64,13 @@ $ forge --help
 $ anvil --help
 $ cast --help
 ```
+
+
+### Motivation 
+1. Uses the same philosophy as Ether in that tokens are sent with send(dest,value,data)
+2. Both contract and regular addresses can control and reject which token they send by registering a tokensToSend hook. (Rejection is done by reverting in the hook function)
+3. Both contract and regular addresses can control and reject which token they receive by registering a tokensReceived hook. (Rejection is done by reverting in the hook function)
+4. THe tokensReceived hook allows to send tokens to a contract and notify it in a single transaction, unlike ERC-20 which requires a double call (approve/transferFrom) to achieve this.
+5. The holder can "authorize" and "revoke" operators which can send tokens on their behalf. These operators are intended to be verified contracts such as an exchange, a cheque processor or an automatic charging system.
+6. Every token transaction contains data and operatorData bytes fields to be used freely to pass data from the holder and the operator, respectively.
+7. It is backward compatible with wallets that do not contain the tokensReceived hook function by deploying a proxy contract implementing the tokensReceived hook for the wallet.
