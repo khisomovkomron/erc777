@@ -15,8 +15,8 @@ contract DeployERC777 is Script {
 
         address[] memory defaultOperator;
 
-        defaultOperator[0] = address(0x123);
-        defaultOperator[1] = address(0x456);
+        // defaultOperator[0] = address(0x123);
+        // defaultOperator[1] = address(0x456);
 
 
         ERC777 erc = new ERC777(name, symbol, granularity, defaultOperator);
