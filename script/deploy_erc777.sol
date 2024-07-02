@@ -9,7 +9,17 @@ contract DeployERC777 is Script {
     function run() external returns(ERC777) {
         vm.startBroadcast();
 
-        ERC777 erc = new ERC777();
+        string memory name = "NewToken";
+        string memory symbol = "NWT";
+        uint256 granularity = 10;
+
+        address[] memory defaultOperator;
+
+        defaultOperator[0] = address(0x123);
+        defaultOperator[1] = address(0x456);
+
+
+        ERC777 erc = new ERC777(name, symbol, granularity, defaultOperator);
 
         vm.stopBroadcast();
 
