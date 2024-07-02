@@ -113,6 +113,16 @@ contract ERC777 {
         doBurn(msg.sender, msg.sender, _amount, _data, "");
     }
 
+    function operatorBurn(
+        address _tokenHolder,
+        uint256 _amount, 
+        bytes calldata _data, 
+        bytes calldata _operatorData
+    ) external {
+        require(isOperatorFor(msg.sender, _tokenHolder), "Not an operator");
+        doBurn(msg.sender, _tokenHolder, _amount, _data, _operatorData);
+    }
+
     function doSend(
         address _operator,
         address _from,
