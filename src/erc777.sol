@@ -9,6 +9,8 @@ contract ERC777 {
 
     // EVENTS 
     event Sent(address operator, address from, address to, uint256 amount, bytes data, bytes operatorData);
+    event AuthorizedOperator(address operator, address from);
+    event RevokedOperator(address operator, address from);
 
     string internal mName;
     string internal mSymbol;
@@ -19,6 +21,8 @@ contract ERC777 {
 
     address[] internal mDefaultOperators;
     mapping(address => bool) internal mIsDefaultOperators;
+    mapping(address=> mapping(address => bool)) internal mRevokeDefaultOperator;
+    mapping(address=> mapping(address => bool)) internal mAuthorizedOperators;
 
     constructor(
         string memory _name,
@@ -65,6 +69,28 @@ contract ERC777 {
 
     function send(address _to, uint256 _amount, bytes calldata _data) external {
         doSend(msg.sender, msg.sender, _to, _amount, _data, "");
+    }
+
+    function authorizeOperator(address _operator) external {
+        require(_operator != msg.sender, "Cannout authorize yourself as an operator");
+        if (mIsDefaultOperators[_operator]){
+            mRevokeDefaultOperator[_operator][msg.sender] = false;
+        } else {
+            mAuthorizedOperators[_operator][msg.sender] = true;
+        }
+
+        emit AuthorizedOperator(_operator, msg.sender);
+    }
+
+    function revokeOperator(address _operator) external {
+        require(_operator != msg.sender, "Cannout authorize yourself as an operator");
+        if (mIsDefaultOperators[_operator]) {
+            mRevokeDefaultOperator[_operator][msg.sender] = true;
+        } else {
+            mAuthorizedOperators[_operator][msg.sender] = false;
+        }
+
+        emit RevokedOperator(_operator, msg.sender);
     }
 
     function doSend(
