@@ -1,8 +1,14 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.20;
+import {Math} from "lib/openzeppelin-contracts/contracts/utils/math/Math.sol";
+
 
 
 contract ERC777 {
+    using Math for uint256;
+
+    // EVENTS 
+    event Sent(address operator, address from, address to, uint256 amount, bytes data, bytes operatorData);
 
     string internal mName;
     string internal mSymbol;
@@ -57,5 +63,26 @@ contract ERC777 {
         return mDefaultOperators;
     }
 
+    function send(address _to, uint256 _amount, bytes calldata _data) external {
+        doSend(msg.sender, msg.sender, _to, _amount, _data, "");
+    }
+
+    function doSend(
+        address _operator,
+        address _from,
+        address _to,
+        uint256 _amount,
+        bytes memory _data,
+        bytes memory _operatorData
+    ) internal {
+
+        require(_to != address(0), "Cannot send to 0x0");
+        require(mBalances[_from] >= _amount, "Not enought funds");
+
+        mBalances[_from] = mBalances[_from] - _amount;
+        mBalances[_to] = mBalances[_to] + _amount;
+
+        emit Sent(_operator, _from, _to, _amount, _data, _operatorData);
+    }
 
 }
