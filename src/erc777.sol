@@ -31,5 +31,21 @@ contract ERC777 {
         }
     }
 
+    function name() public view returns(string memory) {
+        return mName;
+    }
+
+    function symbol() public view returns(string memory) {
+        return mSymbol;
+    }
+
+    function granularity() public view returns (uint256) {
+        return mGranularity;
+    }
+    
+    function totalSupply() public view returns (uint256) {
+        return mTotalSupply;
+    }
+
 
 }
