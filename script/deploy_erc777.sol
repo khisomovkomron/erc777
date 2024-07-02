@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.13;
 
-import {Script, console} from "forge-std/Script.sol";
+import {Script, console} from "lib/forge-std/scr/Script.sol";
 import {ERC777} from "../src/erc777.sol";
 
 contract DeployERC777 is Script {

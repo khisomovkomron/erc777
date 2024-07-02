@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.13;
 
-import {Test, console} from "forge-std/Test.sol";
+import {Test, console} from "lib/forge-std/src/Test.sol";
 import {ERC777} from "../src/erc777.sol";
 import {DeployERC777} from "../script/deploy_erc777.sol";
 

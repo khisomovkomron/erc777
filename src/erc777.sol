@@ -9,6 +9,8 @@ contract ERC777 {
     uint256 internal mGranularity;
     uint256 internal mTotalSupply;
 
+    mapping(address => uint256) internal mBalances;
+
     address[] internal mDefaultOperators;
     mapping(address => bool) internal mIsDefaultOperators;
 
@@ -45,6 +47,14 @@ contract ERC777 {
     
     function totalSupply() public view returns (uint256) {
         return mTotalSupply;
+    }
+
+    function balanceOf(address _tokenHolder) public view returns(uint256) {
+        return mBalances[_tokenHolder];
+    }
+
+    function defaultOperators() public view returns (address[] memory) {
+        return mDefaultOperators;
     }
 
 
