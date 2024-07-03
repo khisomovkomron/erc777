@@ -79,13 +79,38 @@ contract ERC777TEST is Test {
     }
 
     function testAuthorizeOperator() public {
+        token.authorizeOperator(operator_3);
+        assertEq(token.getmAuthorizedOperators(operator_3), true);
+    }
+
+    function testAuthorizeOperatorWithDefaultOperator() public {
         token.authorizeOperator(operator_1);
-        assertEq(token.getmAuthorizedOperators(operator_1), true);
+        assertEq(token.getmRevokeDefaultOperators(operator_1), false);
     }
 
     function testCannotAuthorizeOperator() public {
         vm.expectRevert();
         token.authorizeOperator(msg.sender);
+    }
+
+    function testRevokeOperator() public {
+        token.revokeOperator(operator_1);
+        assertEq(token.getmAuthorizedOperators(operator_1), false);
+    }
+
+    function testRevokeOperatorWithDefaultOperator() public {
+        token.revokeOperator(operator_1);
+        assertEq(token.getmRevokeDefaultOperators(operator_1), true);
+    }
+
+    function testRevokeOperatorWithoutDefaultOperator() public {
+        token.revokeOperator(operator_3);
+        assertEq(token.getmAuthorizedOperators(operator_1), false);
+    }
+
+    function testCannotRevokeOperator() public {
+        vm.expectRevert();
+        token.revokeOperator(msg.sender);
     }
 
 }

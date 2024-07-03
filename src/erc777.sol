@@ -6,7 +6,7 @@ import {Math} from "lib/openzeppelin-contracts/contracts/utils/math/Math.sol";
 
 contract ERC777 {
     // ERROR
-    error CannoutAuthorizeYourself();
+    error CannotAuthorizeYourself();
 
     using Math for uint256;
 
@@ -23,7 +23,7 @@ contract ERC777 {
 
     mapping(address => uint256) internal mBalances;
 
-    address[] internal mDefaultOperators;
+    address internal mDefaultOperators;
     mapping(address => bool) internal mIsDefaultOperators;
     mapping(address=> mapping(address => bool)) internal mRevokeDefaultOperator;
     mapping(address=> mapping(address => bool)) internal mAuthorizedOperators;
@@ -32,7 +32,7 @@ contract ERC777 {
         string memory _name,
         string memory _symbol,
         uint256 _granularity,
-        address [] memory _defaultOperators
+        address _defaultOperators
     ) {
         mName = _name;
         mSymbol = _symbol;
@@ -42,9 +42,8 @@ contract ERC777 {
 
         mDefaultOperators = _defaultOperators;
 
-        for (uint256 i =0; i< mDefaultOperators.length; i++) {
-            mIsDefaultOperators[mDefaultOperators[i]] = true;
-        }
+        mIsDefaultOperators[mDefaultOperators] = true;
+
     }
 
     function name() public view returns(string memory) {
@@ -73,7 +72,7 @@ contract ERC777 {
         return mBalances[_tokenHolder];
     }
 
-    function defaultOperators() public view returns (address[] memory) {
+    function defaultOperators() public view returns (address) {
         return mDefaultOperators;
     }
 
@@ -82,8 +81,8 @@ contract ERC777 {
     }
 
     function authorizeOperator(address _operator) external {
-        if (_operator != msg.sender) {
-            revert CannoutAuthorizeYourself();
+        if (_operator == msg.sender) {
+            revert CannotAuthorizeYourself();
         }
         if (mIsDefaultOperators[_operator]){
             mRevokeDefaultOperator[_operator][msg.sender] = false;
@@ -95,7 +94,9 @@ contract ERC777 {
     }
 
     function revokeOperator(address _operator) external {
-        require(_operator != msg.sender, "Cannout authorize yourself as an operator");
+        if (_operator == msg.sender) {
+            revert CannotAuthorizeYourself();
+        }
         if (mIsDefaultOperators[_operator]) {
             mRevokeDefaultOperator[_operator][msg.sender] = true;
         } else {
@@ -174,6 +175,10 @@ contract ERC777 {
 
     function getmAuthorizedOperators(address _operator) public view returns (bool) {
         return mAuthorizedOperators[_operator][msg.sender];
+    }
+
+    function getmRevokeDefaultOperators(address _operator) public view returns (bool) {
+        return mRevokeDefaultOperator[_operator][msg.sender];
     }
 
 }
