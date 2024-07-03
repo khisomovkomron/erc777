@@ -5,6 +5,9 @@ import {Math} from "lib/openzeppelin-contracts/contracts/utils/math/Math.sol";
 
 
 contract ERC777 {
+    // ERROR
+    error CannoutAuthorizeYourself();
+
     using Math for uint256;
 
     // EVENTS 
@@ -79,7 +82,9 @@ contract ERC777 {
     }
 
     function authorizeOperator(address _operator) external {
-        require(_operator != msg.sender, "Cannout authorize yourself as an operator");
+        if (_operator != msg.sender) {
+            revert CannoutAuthorizeYourself();
+        }
         if (mIsDefaultOperators[_operator]){
             mRevokeDefaultOperator[_operator][msg.sender] = false;
         } else {
@@ -165,6 +170,10 @@ contract ERC777 {
 
     function requireMultiple(uint256 _amount) internal view {
         require(_amount % mGranularity == 0, "Amount is not a multiple of granularity");
+    }
+
+    function getmAuthorizedOperators(address _operator) public view returns (bool) {
+        return mAuthorizedOperators[_operator][msg.sender];
     }
 
 }

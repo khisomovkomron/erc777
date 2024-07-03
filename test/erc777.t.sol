@@ -78,4 +78,14 @@ contract ERC777TEST is Test {
         assertEq(token.balanceOf(operator_1), 2 ether);
     }
 
+    function testAuthorizeOperator() public {
+        token.authorizeOperator(operator_1);
+        assertEq(token.getmAuthorizedOperators(operator_1), true);
+    }
+
+    function testCannotAuthorizeOperator() public {
+        vm.expectRevert();
+        token.authorizeOperator(msg.sender);
+    }
+
 }
