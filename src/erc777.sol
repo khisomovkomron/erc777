@@ -60,6 +60,12 @@ contract ERC777 {
         return mTotalSupply;
     }
 
+    function mint(uint256 amount) public {
+        mBalances[msg.sender] = mBalances[msg.sender] + amount;
+        mTotalSupply = mTotalSupply + amount;
+
+    }
+
     function balanceOf(address _tokenHolder) public view returns(uint256) {
         return mBalances[_tokenHolder];
     }
