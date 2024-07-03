@@ -7,6 +7,7 @@ import {Math} from "lib/openzeppelin-contracts/contracts/utils/math/Math.sol";
 contract ERC777 {
     // ERROR
     error CannotAuthorizeYourself();
+    error AmountIsNotMultipleOfGranularity();
 
     using Math for uint256;
 
@@ -170,8 +171,9 @@ contract ERC777 {
     }
 
     function requireMultiple(uint256 _amount) internal view {
-        require(_amount % mGranularity == 0, "Amount is not a multiple of granularity");
-    }
+        if (_amount % mGranularity != 0) {
+            revert AmountIsNotMultipleOfGranularity();
+    }}
 
     function getmAuthorizedOperators(address _operator) public view returns (bool) {
         return mAuthorizedOperators[_operator][msg.sender];

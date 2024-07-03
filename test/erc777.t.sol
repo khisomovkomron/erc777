@@ -125,6 +125,4 @@ contract ERC777TEST is Test {
         assert(token.getmRevokeDefaultOperators(operator_1) == false);
     }
 
-
-
 }
