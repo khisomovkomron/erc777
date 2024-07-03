@@ -117,4 +117,14 @@ contract ERC777TEST is Test {
         token.revokeOperator(msg.sender);
     }
 
+    function testgetmAuthorizedOperators() public view{
+        assert(token.getmAuthorizedOperators(operator_1) == false);
+    }
+
+    function testgetmRevokeDefaultOperators() public view{
+        assert(token.getmRevokeDefaultOperators(operator_1) == false);
+    }
+
+
+
 }
