@@ -57,13 +57,10 @@ contract ERC777TEST is Test {
         assert(keccak256(abi.encodePacked(expectedTotalSupply)) == keccak256(abi.encodePacked(actualTotalSupply)));
     }
 
-    // function testDefaultOperators() public view{
-    //     address mDefaultOperators = token.defaultOperators();
-    //     for (uint256 i =0; i < mDefaultOperators.length; i++){
-    //         console.log("Default Operators:", mDefaultOperators[i]);
-
-    //     }
-    // }
+    function testDefaultOperators() public view{
+        assertEq(token.defaultOperators(), operator_1);
+        
+    }
 
     function testMint() public{
         token.mint(amount);
@@ -76,6 +73,13 @@ contract ERC777TEST is Test {
         console.log(token.balanceOf(msg.sender));
         token.send(operator_1, amount, data);
         assertEq(token.balanceOf(operator_1), 2 ether);
+    }
+
+    function testBurn() public{
+        token.mint(amount*2);
+        console.log(token.balanceOf(msg.sender));
+        token.burn(amount, data);
+        assertEq(token.totalSupply(), amount);
     }
 
     function testAuthorizeOperator() public {
