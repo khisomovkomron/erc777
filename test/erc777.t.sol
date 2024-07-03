@@ -65,6 +65,12 @@ contract ERC777TEST is Test {
     //     }
     // }
 
+    function testMint() public{
+        token.mint(amount);
+        console.log(token.balanceOf(msg.sender));
+        assertEq(token.totalSupply(), 2 ether);
+    }
+
     function testSend() public{
         token.mint(amount*2);
         console.log(token.balanceOf(msg.sender));
