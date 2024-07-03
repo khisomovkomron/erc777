@@ -74,3 +74,11 @@ $ cast --help
 5. The holder can "authorize" and "revoke" operators which can send tokens on their behalf. These operators are intended to be verified contracts such as an exchange, a cheque processor or an automatic charging system.
 6. Every token transaction contains data and operatorData bytes fields to be used freely to pass data from the holder and the operator, respectively.
 7. It is backward compatible with wallets that do not contain the tokensReceived hook function by deploying a proxy contract implementing the tokensReceived hook for the wallet.
+
+
+### COVERAGE
+| File                     | % Lines        | % Statements   | % Branches     | % Funcs        |
+|--------------------------|----------------|----------------|----------------|----------------|
+| script/deploy_erc777.sol | 100.00% (7/7)  | 100.00% (8/8)  | 100.00% (0/0)  | 100.00% (1/1)  |
+| src/erc777.sol           | 80.49% (33/41) | 80.00% (32/40) | 50.00% (10/20) | 84.21% (16/19) |
+| Total                    | 83.33% (40/48) | 83.33% (40/48) | 50.00% (10/20) | 85.00% (17/20) |
